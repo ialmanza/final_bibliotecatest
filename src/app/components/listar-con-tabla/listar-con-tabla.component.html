@@ -1,0 +1,72 @@
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+          <input
+          type="text"
+          class="form-control"
+          name="searchTerm"
+          placeholder="Buscar..."
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="filter($event)"
+        >
+      </div>
+    </div>
+  </div> <br><br>
+
+  <div class="row d-flex">
+    <div class="col">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Título</th>
+            <th scope="col">ISBN</th>
+            <th scope="col">Primer autor</th>
+            <th scope="col">Segundo autor</th>
+            <th scope="col">Tercer autor</th>
+            <th scope="col">Fecha de publicacion</th>
+            <th scope="col">Editorial</th>
+            <th scope="col">Genero</th>
+            <th scope="col">Paginas</th>
+            <th scope="col">Campo adicional</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let libro of displayedLibros">
+            <td>{{libro.titulo}}</td>
+            <td>{{libro.isbn}}</td>
+            <td>{{libro.primerautor}}</td>
+            <td>{{libro.segundoautor}}</td>
+            <td>{{libro.tercerautor}}</td>
+            <td>{{libro.fechapublicacion}}</td>
+            <td>{{libro.editorial}}</td>
+            <td>{{libro.genero}}</td>
+            <td>{{libro.paginas}}</td>
+            <td>{{libro.descripcion}}</td>
+
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="pagination-controls">
+    <div class="page-size-options">
+      <label for="pageSize">Libros por página:</label>
+      <select id="pageSize" [(ngModel)]="pageSize" (change)="changePageSize(pageSize)">
+        <option *ngFor="let size of pageSizeOptions" [value]="size">{{size}}</option>
+      </select>
+    </div>
+    <div class="pagination-buttons">
+      <button (click)="goToPage(0)" [disabled]="currentPage === 0">&laquo;</button>
+      <button (click)="previousPage()" [disabled]="currentPage === 0">&lt;</button>
+      <span>Pagina {{currentPage + 1}} of {{totalPages()}}</span>
+      <button (click)="nextPage()" [disabled]="currentPage >= totalPages() - 1"> &gt;</button>
+      <button (click)="goToPage(totalPages() - 1)" [disabled]="currentPage >= totalPages() - 1"> &raquo;</button>
+    </div>
+  </div>
+
+
