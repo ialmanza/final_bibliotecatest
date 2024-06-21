@@ -44,20 +44,6 @@ export class LibrosServicioService {
     }
    }
 
-  //  private loadLibrosFromLocalStorage() {
-  //   const storedLibros = this.getLibrosFromLocalStorage();
-  //   this.librosSubject.next(storedLibros);
-  // }
-
-  // private getLibrosFromLocalStorage(): Libro[] {
-  //   const storedLibros = localStorage.getItem('libros');
-  //   return storedLibros ? JSON.parse(storedLibros) : [];
-  // }
-
-  // private saveLibrosToLocalStorage(libros: Libro[]) {
-  //   localStorage.setItem('libros', JSON.stringify(libros));
-  // }
-
   private loadLibrosFromLocalStorage() {
     const storedLibros = this.getLibrosFromLocalStorage();
     this.librosSubject.next(storedLibros);
@@ -81,6 +67,15 @@ export class LibrosServicioService {
       console.warn('localStorage is not available.');
     }
   }
+
+
+verificarISBNDisponible(isbn: string): boolean {
+  if (typeof localStorage !== 'undefined') {
+      const storedLibros = this.getLibrosFromLocalStorage();
+      return !storedLibros.findIndex(libro => libro.isbn === isbn);
+  }
+  return false;
+}
 
 
 }

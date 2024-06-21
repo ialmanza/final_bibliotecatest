@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 import { LibrosServicioService } from '../../services/libros-servicio.service';
 import { Router } from '@angular/router';
@@ -33,6 +34,10 @@ export class CrearLibroComponent implements OnInit {
   ngOnInit() {}
 
   addLibro() {
+    if (!this.verificarISBDValidada()) {
+      alert('ISBN ya se enceuntra registrado');
+      return;
+    }
     if (!this.libro.editorial || !this.libro.genero) {
       this.errorMessage = "No se pueden dejar campos vacíos para 'Editorial' o 'Género'.";
       return;
@@ -68,5 +73,11 @@ export class CrearLibroComponent implements OnInit {
   onClick() {
     this.router.navigate(['/listar-tabla']);
   }
-}
 
+
+  verificarISBDValidada() {
+    const variable = this.librosService.verificarISBNDisponible(this.libro.isbn)
+    return variable
+  }
+
+}
