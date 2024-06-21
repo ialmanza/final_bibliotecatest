@@ -72,7 +72,7 @@ export class LibrosServicioService {
 verificarISBNDisponible(isbn: string): boolean {
   if (typeof localStorage !== 'undefined') {
       const storedLibros = this.getLibrosFromLocalStorage();
-      return !storedLibros.findIndex(libro => libro.isbn === isbn);
+      return !storedLibros.some(libro => libro.isbn === isbn);
   }
   return false;
 }
