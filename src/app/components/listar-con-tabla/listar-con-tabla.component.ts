@@ -8,6 +8,7 @@ import { FilterPipe } from '../../pipes/filter.pipe';
 import { DialogContentEditExampleDialog } from '../ventana-modal-editar-libro/ventana-modal-editar-libro.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAnimationsExampleDialog } from '../ventana-modal/ventana-modal.component';
+import { DialogContentExampleMostrarDialog } from '../mostrar-al-iniciar/mostrar-al-iniciar.component';
 
 @Component({
   selector: 'app-listar-con-tabla',
@@ -37,6 +38,9 @@ export class ListarConTablaComponent {
       this.totalItems = libros.length;
       this.updateDisplayedLibros();
     });
+    if (this.libros.length === 0) {
+      this.openMostrarDialog();
+    }
   }
 
   filter(query: string) {
@@ -108,6 +112,12 @@ export class ListarConTablaComponent {
     });
   }
 
+  openMostrarDialog() {
+    const dialogRef = this.dialog.open(DialogContentExampleMostrarDialog);
 
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
 
 }

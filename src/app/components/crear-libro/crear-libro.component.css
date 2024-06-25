@@ -82,9 +82,9 @@ select.form-control option {
   background-color: #fff;
 }
 
-select.form-control option:hover {
+/* select.form-control option:hover {
   background-color: #f1f1f1; /
-}
+} */
 
 .form-group select.form-control {
   margin-bottom: 15px;
