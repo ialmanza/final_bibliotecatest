@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { Component, Input} from '@angular/core';
 import { LibroComponent } from "../libro/libro.component";
 import { LibrosServicioService } from '../../services/libros-servicio.service';
 import { Libro } from '../../models/Libro';
@@ -8,6 +8,7 @@ import { FilterPipe } from '../../pipes/filter.pipe';
 import { DialogContentEditExampleDialog } from '../ventana-modal-editar-libro/ventana-modal-editar-libro.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAnimationsExampleDialog } from '../ventana-modal/ventana-modal.component';
+import { DataService } from '../../services/data-service.service';
 
 
 @Component({
@@ -18,21 +19,26 @@ import { DialogAnimationsExampleDialog } from '../ventana-modal/ventana-modal.co
   styleUrl: './editar-libro.component.css'
 })
 export class EditarLibroComponent {
-  libros: Libro[] = [];
+  @Input() libros: any = {};
+  librosss: Libro[] = [];
   filteredLibros: Libro[] = [];
   searchTerm: string = '';
-  displayedLibros: Libro[] = [];
+  displayedLibros: any[] = [];
 
   pageSizeOptions = [5, 10, 20];
   pageSize = this.pageSizeOptions[0];
   currentPage = 0;
   totalItems = 0;
 
-  constructor(private librosServicio: LibrosServicioService, private dialog: MatDialog) {}
+  constructor(private librosServicio: LibrosServicioService, private dialog: MatDialog, private dataService: DataService) {}
 
   ngOnInit() {
-    this.librosServicio.getLibros().subscribe((libros: Libro[]) => {
-      this.libros = libros;
+    this.getLibrosDB();
+  }
+
+  getLibrosDB() {
+    this.dataService.getItems().subscribe((libros: any = {}) => {
+      this.librosss = libros;
       this.filteredLibros = libros;
       this.totalItems = libros.length;
       this.updateDisplayedLibros();
@@ -40,20 +46,16 @@ export class EditarLibroComponent {
   }
 
   filter(query: string) {
-    this.filteredLibros = this.libros.filter(libro =>
-      libro.titulo && libro.titulo.toLowerCase().includes(query.toLowerCase()) ||
-      libro.primerautor && libro.primerautor.toLowerCase().includes(query.toLowerCase()) ||
-      libro.genero &&  libro.genero.toLowerCase().includes(query.toLowerCase()) ||
-      libro.editorial && libro.editorial.toLowerCase().includes(query.toLowerCase()) ||
-      libro.fechapublicacion &&libro.fechapublicacion.toLowerCase().includes(query.toLowerCase()) ||
-      libro.isbn && libro.isbn.toLowerCase().includes(query.toLowerCase()) ||
-      libro.segundoautor && libro.segundoautor.toLowerCase().includes(query.toLowerCase()) ||
-      libro.tercerautor && libro.tercerautor.toLowerCase().includes(query.toLowerCase())
+    this.filteredLibros = this.librosss.filter(libro =>
+      Object.values(libro).some(val => val && val.toString().toLowerCase().includes(this.searchTerm.toLowerCase()))
     );
     this.totalItems = this.filteredLibros.length;
     this.currentPage = 0;
     this.updateDisplayedLibros();
+
   }
+
+
   updateDisplayedLibros() {
     const start = this.currentPage * this.pageSize;
     const end = start + this.pageSize;
@@ -90,14 +92,17 @@ export class EditarLibroComponent {
   }
 
 
-  openEditDialog(libro: Libro) {
+  openEditDialog(libro: any = {}) {
     const dialogRef = this.dialog.open(DialogContentEditExampleDialog, {
       data: libro
-    });
+  });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
-        this.librosServicio.updateLibro(libro);
+      if (result) {
+        const librosJson = JSON.stringify(libro);
+        this.dataService.updateItem(parseInt(libro.id,10), librosJson).subscribe(() => {
+          this.getLibrosDB();
+        });
       }
     });
   }
@@ -109,8 +114,10 @@ export class EditarLibroComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
-        this.librosServicio.deleteLibro(libro.id);
+      if (result) {
+        this.dataService.deleteItem(parseInt(libro.id,10)).subscribe(() => {
+          this.getLibrosDB();
+        });
       }
     });
   }

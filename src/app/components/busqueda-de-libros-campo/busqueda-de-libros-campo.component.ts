@@ -14,6 +14,7 @@ import {MatTreeNestedDataSource, MatTreeModule} from '@angular/material/tree';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import * as XLSX from 'xlsx';
+import { DataService } from '../../services/data-service.service';
 
 
 interface FoodNode {
@@ -25,31 +26,57 @@ interface FoodNode {
 const TREE_DATA: FoodNode[] = [
   {
     name: 'Editorial',
-    children: [{name: 'Fantastic World'}, {name: 'Gente Nueva'}, {name: 'Sonando'}],
+    children: [{name: 'Signet Classic'}, {name: 'Alba'}, {name: 'Austral'},
+               {name: 'Penguin Classics'}, {name: 'Debolsillo'}, {name: 'Vintage Espaniol'},
+               {name: 'Planeta'}, {name: 'Lumen'}, {name: 'Vintage'}, {name: 'Mariner Books'},
+               {name: 'Salamandra'}, {name: 'Debate'}, {name: 'Oxford University Press'},
+               {name: 'Molino'}, {name: 'Plaza & Janes'}, {name: 'Timun Mas'}, {name: 'Roca Editorial'},
+               {name: 'Catedra'}],
   },
   {
     name: 'Genero',
     children: [
       {
-        name: 'Terror'
+        name: 'Thriller'
       },
       {
-        name: 'Aventuras'
+        name: 'Cuentos fantásticos'
       },
       {
-        name: 'Comedia'
+        name: 'Literatura infantil'
       },
       {
-        name: 'Fantasia'
+        name: 'Ciencia ficción distópica'
+      },
+      {
+        name: 'Realismo mágico'
       },
       {
         name: 'Novelas',
-        children: [{name: 'Novela Inglesa'}, {name: 'Otras'}],
+        children: [{name: 'Inglesa'}, {name: 'Picaresca'},{name: 'Histórica'},{name: 'Psicológica'},{name: 'Aventuras'},{name: 'Misterio'},
+          {name: 'Gótica'}, {name: 'Realista'}, {name: 'Ciencia Ficción'}, {name: 'Corta'}, {name: 'Educativa'}, {name: 'Poesia'}, {name: 'Romantica'}, {name: 'Terror'}
+        ],
       },
       {
-        name: 'Animados',
-        children: [{name: 'Anime'}, {name: '3D'}],
-      }
+        name: 'Historia'
+      },
+      {
+        name: 'Literatura juvenil'
+      },
+      {
+        name: 'Ficción',
+        children: [{name: 'Clásica'}, {name: 'Modernista'}, {name: 'Experimental'}],
+      },
+      {
+        name: 'Divulgación científica'
+      },
+      {
+        name: 'Fantasía'
+      },
+      {
+        name: 'Teatro'
+      },
+
 
     ],
   },
@@ -68,7 +95,7 @@ export class BusquedaDeLibrosCampoComponent {
   libros: Libro[] = [];
   filteredLibros: Libro[] = [];
   searchTerm: string = '';
-  displayedLibros: Libro[] = [];
+  displayedLibros: any[] = [];
 
   pageSizeOptions = [5, 10, 20];
   pageSize = this.pageSizeOptions[0];
@@ -79,12 +106,16 @@ export class BusquedaDeLibrosCampoComponent {
   dataSource = new MatTreeNestedDataSource<FoodNode>();
   shoeMenu?: boolean = false;
 
-  constructor(private librosServicio: LibrosServicioService, private dialog: MatDialog) {
+  constructor(private librosServicio: LibrosServicioService, private dialog: MatDialog, private dataService: DataService) {
     this.dataSource.data = TREE_DATA;
   }
 
   ngOnInit() {
-    this.librosServicio.getLibros().subscribe((libros: Libro[]) => {
+    this.getLibrosDB();
+  }
+
+  getLibrosDB() {
+    this.dataService.getItems().subscribe((libros: Libro[]) => {
       this.libros = libros;
       this.filteredLibros = libros;
       this.totalItems = libros.length;
@@ -158,15 +189,8 @@ export class BusquedaDeLibrosCampoComponent {
   search(term: string) {
     console.log(`Searching for: ${term}`);
     this.filteredLibros = this.libros.filter(libro =>
-      libro.editorial && libro.editorial.toLowerCase().includes(term.toLowerCase()) ||
-      libro.fechapublicacion && libro.fechapublicacion.toLowerCase().includes(term.toLowerCase()) ||
-      libro.genero && libro.genero.toLowerCase().includes(term.toLowerCase()) ||
-      libro.primerautor && libro.primerautor.toLowerCase().includes(term.toLowerCase()) ||
-      libro.segundoautor && libro.segundoautor.toLowerCase().includes(term.toLowerCase()) ||
-      libro.tercerautor && libro.tercerautor.toLowerCase().includes(term.toLowerCase()) ||
-      libro.titulo && libro.titulo.toLowerCase().includes(term.toLowerCase())
+      Object.values(libro).some(val => val && val.toString().toLowerCase().includes(term.toLowerCase()))
     );
-
     this.totalItems = this.filteredLibros.length;
     this.currentPage = 0;
     this.updateDisplayedLibros();
@@ -188,26 +212,26 @@ export class BusquedaDeLibrosCampoComponent {
     this.updateDisplayedLibros();
   }
 
-  exportToExcel(): void {
-    const filteredData = this.filteredLibros.map(libro => {
-      const { titulo, isbn, primerautor, segundoautor, tercerautor, fechapublicacion, editorial, genero, paginas, descripcion, ...rest } = libro;
-      return {
-        Título: titulo,
-        ISBN: isbn,
-        'Primer autor': primerautor,
-        'Segundo autor': segundoautor,
-        'Tercer autor': tercerautor,
-        'Fecha de publicación': fechapublicacion,
-        Editorial: editorial,
-        Género: genero,
-        Páginas: paginas,
-        'Campo adicional': descripcion
-      };
-    });
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filteredData);
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Libros');
-    XLSX.writeFile(wb, 'Libros.xlsx');
-  }
+  // exportToExcel(): void {
+  //   const filteredData = this.filteredLibros.map(libro => {
+  //     const { titulo, isbn, autor1, autor2, autor3, anio, editorial, genero, cant_pag, campo_extra, ...rest } = libro;
+  //     return {
+  //       Título: titulo,
+  //       ISBN: isbn,
+  //       'Primer autor': primerautor,
+  //       'Segundo autor': segundoautor,
+  //       'Tercer autor': tercerautor,
+  //       'Fecha de publicación': fechapublicacion,
+  //       Editorial: editorial,
+  //       Género: genero,
+  //       Páginas: paginas,
+  //       'Campo adicional': descripcion
+  //     };
+  //   });
+  //   const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filteredData);
+  //   const wb: XLSX.WorkBook = XLSX.utils.book_new();
+  //   XLSX.utils.book_append_sheet(wb, ws, 'Libros');
+  //   XLSX.writeFile(wb, 'Libros.xlsx');
+  // }
 
 }

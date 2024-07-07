@@ -1,61 +1,76 @@
-<h2 mat-dialog-title>{{data.titulo}}</h2>
 
 <mat-dialog-content class="mat-typography">
 
-  <div>
-    <label for="titulo">Título:</label> <br>
-    <input class="form-control" id="titulo" type="text" placeholder="{{data.titulo}}" [(ngModel)]="data.titulo" name="titulo"/> <br>
+  <div class="form-group p-2">
+    <div class="form-group">
+      <input type="text" class="form-control" id="titulo" required [(ngModel)]="form.value.titulo" name="titulo" #titulo="ngModel" placeholder="Título">
+      <div [hidden]="titulo.valid || titulo.pristine" class="custom-error">
+        Título es requerido.
+      </div>
+    </div>
   </div>
 
-  <div>
-    <label for="ISBN">ISBN:</label> <br>
-    <input class="form-control" id="ISBN" type="text" placeholder="{{data.isbn}}" [(ngModel)]="data.isbn" name="isbn"/> <br>
+  <div class="form-group p-2">
+    <input type="number" class="form-control" id="isbn" required [(ngModel)]="form.value.isbn" name="isbn" #isbn="ngModel" placeholder="ISBN">
+    <div [hidden]="isbn.valid || isbn.pristine" class="custom-error">
+      ISBN es requerido.
+    </div>
   </div>
 
-  <div>
-    <label for="Primer autor">Primer autor:</label> <br>
-    <input class="form-control" id="Primer autor" type="text" placeholder="{{data.primerautor}}" [(ngModel)]="data.primerautor" name="primerautor"/> <br>
+  <div class="form-group p-2">
+    <input type="text" class="form-control" id="primerautor" required [(ngModel)]="form.value.autor1" name="primerautor" #autor1="ngModel" placeholder="Primer Autor">
+    <div [hidden]="autor1.valid || autor1.pristine" class="custom-error">
+      Primer autor es requerido.
+    </div>
   </div>
 
-  <div>
-    <label for="Segundo autor">Segundo autor:</label> <br>
-    <input class="form-control" id="Segundo autor" type="text" placeholder="{{data.segundoautor}}" [(ngModel)]="data.segundoautor" name="segundoautor"/> <br>
+  <div class="form-group p-2">
+    <input type="text" class="form-control" id="segundoautor" [(ngModel)]="form.value.autor2" name="segundoautor" #autor2="ngModel" placeholder="Segundo Autor">
   </div>
 
-  <div>
-    <label for="Tercer autor">Tercer autor:</label> <br>
-    <input class="form-control" id="Tercer autor" type="text" placeholder="{{data.tercerautor}}" [(ngModel)]="data.tercerautor" name="tercerautor"/> <br>
+  <div class="form-group p-2">
+    <input type="text" class="form-control" id="tercerautor" [(ngModel)]="form.value.autor3" name="tercerautor" #autor3="ngModel" placeholder="Tercer Autor">
   </div>
 
-  <div>
-    <label for="Fecha de publicacion">Fecha de publicacion:</label> <br>
-    <input class="form-control" id="Fecha de publicacion" type="date" placeholder="{{data.fechapublicacion}}" [(ngModel)]="data.fechapublicacion" name="fechapublicacion"/> <br>
+  <div class="form-group p-2">
+    <label for="fechapublicacion">Fecha de Publicación:</label>
+    <input type="number" class="form-control" id="fechapublicacion" required [(ngModel)]="form.value.anio" name="fechapublicacion" #anio="ngModel">
+    <div [hidden]="anio.valid || anio.pristine" class="custom-error">
+      Fecha de Publicación es requerida.
+    </div>
   </div>
 
-  <select name="editorialSelect" class="form-control" id=" editorial" [(ngModel)]="data.editorial" #editorial required>
-    <option value="seleccione" disabled selected>Seleccione Editorial</option>
-    <option value="Gente Nueva">Gente Nueva</option>
-    <option value="Fantastic World">Fantastic World</option>
-    <option value="Sonando">Sonando</option>
-  </select> <br>
-
-  <select name="generoSelect" class="form-control" id="genero" [(ngModel)]="data.genero" #genero required>
-    <option value="seleccione" disabled selected>Seleccione Genero</option>
-    <option value="Fantasia">Fantasia</option>
-    <option value="Terror">Terror</option>
-    <option value="Musical">Musical</option>
-    <option value="Aventura"> Aventura</option>
-    <option value="Comedia">Comedia</option>
-  </select> <br>
-
-  <div>
-    <label for="Paginas">Paginas:</label> <br>
-    <input class="form-control" id="Paginas" type="number" placeholder="{{data.paginas}}" [(ngModel)]="data.paginas" name="paginas"/> <br>
+  <div class="form-group p-2">
+    <select class="form-control" id="editorial" name="editorial" required [(ngModel)]="form.value.editorial" #editorial="ngModel">
+      <option value="" disabled selected>Seleccione Editorial</option>
+      <option *ngFor="let editorial of editoriales" [value]="editorial">{{ editorial }}</option>
+    </select>
+    <div [hidden]="editorial.valid || editorial.pristine" class="custom-error">
+      Editorial es requerida.
+    </div>
   </div>
 
-  <div>
-    <label for="Campo adicional">Campo adicional:</label> <br>
-    <textarea class="form-control" id="Campo adicional" cols="30" rows="10" placeholder="{{data.descripcion}}" [(ngModel)]="data.descripcion" name="descripcion"></textarea> <br>
+  <div class="form-group p-2">
+    <select class="form-control" id="genero" name="genero" required [(ngModel)]="form.value.genero" #genero="ngModel">
+      <option value="" disabled selected>Seleccione Género</option>
+      <option value="Fantasia">Fantasía</option>
+      <option *ngFor="let genero of generos" [value]="genero">{{ genero }}</option>
+
+    </select>
+    <div [hidden]="genero.valid || genero.pristine" class="custom-error">
+      Género es requerido.
+    </div>
+  </div>
+
+  <div class="form-group p-2">
+    <input type="number" class="form-control" id="paginas" required [(ngModel)]="form.value.cant_pag" name="paginas" #cant_pag="ngModel" placeholder="Páginas">
+    <div [hidden]="cant_pag.valid || cant_pag.pristine" class="custom-error">
+      Páginas es requerido.
+    </div>
+  </div>
+
+  <div class="form-group p-2">
+    <textarea class="form-control" placeholder="Campo adicional" rows="3" [(ngModel)]="form.value.campo_extra" name="descripcion" #campo_extra="ngModel"></textarea>
   </div>
 
 </mat-dialog-content>
@@ -65,4 +80,59 @@
 </mat-dialog-actions>
 
 
+<!-- <mat-dialog-content class="mat-typography">
+  <form [formGroup]="form">
+    <div class="form-group p-2">
+      <div class="form-group">
+        <input type="text" class="form-control" id="titulo" required formControlName="titulo" placeholder="Título">
+      </div>
+    </div>
 
+    <div class="form-group p-2">
+      <input type="number" class="form-control" id="isbn" required formControlName="isbn" placeholder="ISBN">
+    </div>
+
+    <div class="form-group p-2">
+      <input type="text" class="form-control" id="primerautor" required formControlName="autor1" placeholder="Primer Autor">
+    </div>
+
+    <div class="form-group p-2">
+      <input type="text" class="form-control" id="segundoautor" formControlName="autor2" placeholder="Segundo Autor">
+    </div>
+
+    <div class="form-group p-2">
+      <input type="text" class="form-control" id="tercerautor" formControlName="autor3" placeholder="Tercer Autor">
+    </div>
+
+    <div class="form-group p-2">
+      <label for="fechapublicacion">Fecha de Publicación:</label>
+      <input type="number" class="form-control" id="fechapublicacion" required formControlName="anio">
+    </div>
+
+    <div class="form-group p-2">
+      <select class="form-control" id="editorial" required formControlName="editorial">
+        <option value="" disabled>Seleccione Editorial</option>
+        <option *ngFor="let editorial of editoriales" [value]="editorial">{{ editorial }}</option>
+      </select>
+    </div>
+
+    <div class="form-group p-2">
+      <select class="form-control" id="genero" required formControlName="genero">
+        <option value="" disabled>Seleccione Género</option>
+        <option *ngFor="let genero of generos" [value]="genero">{{ genero }}</option>
+      </select>
+    </div>
+
+    <div class="form-group p-2">
+      <input type="number" class="form-control" id="paginas" required formControlName="cant_pag" placeholder="Páginas">
+    </div>
+
+    <div class="form-group p-2">
+      <textarea class="form-control" placeholder="Campo adicional" rows="3" formControlName="campo_extra"></textarea>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-button (click)="saveChanges()" cdkFocusInitial>Editar</button>
+</mat-dialog-actions> -->

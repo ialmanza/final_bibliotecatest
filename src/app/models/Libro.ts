@@ -1,14 +1,15 @@
 export interface Libro {
   id: string;
-  titulo: string;
-  isbn: string;
-  primerautor: string;
-  segundoautor: string;
-  tercerautor: string;
-  fechapublicacion: string;
-  editorial: string;
-  genero: string;
-  paginas: string;
-  descripcion: string;
+  titulo: string,
+  autor1: string,
+  cant_pag: number,
+  isbn: string,
+  anio: number,
+  editorial: string,
+  genero: string,
+  campo_extra: string,
+  autor2: string,
+  autor3: string
   hide: boolean;
 }
+

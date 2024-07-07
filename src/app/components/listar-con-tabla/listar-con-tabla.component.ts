@@ -9,6 +9,7 @@ import { DialogContentEditExampleDialog } from '../ventana-modal-editar-libro/ve
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAnimationsExampleDialog } from '../ventana-modal/ventana-modal.component';
 import { DialogContentExampleMostrarDialog } from '../mostrar-al-iniciar/mostrar-al-iniciar.component';
+import { DataService } from '../../services/data-service.service';
 
 @Component({
   selector: 'app-listar-con-tabla',
@@ -22,30 +23,30 @@ export class ListarConTablaComponent {
   libros: Libro[] = [];
   filteredLibros: Libro[] = [];
   searchTerm: string = '';
-  displayedLibros: Libro[] = [];
+  displayedLibros: any[] = [];
 
   pageSizeOptions = [5, 10, 20];
   pageSize = this.pageSizeOptions[0];
   currentPage = 0;
   totalItems = 0;
 
-  constructor(private librosServicio: LibrosServicioService, private dialog: MatDialog) {}
+  constructor(private librosServicio: LibrosServicioService, private dialog: MatDialog, private dataService: DataService) {}
 
   ngOnInit() {
-    this.librosServicio.getLibros().subscribe((libros: Libro[]) => {
+    this.getLibrosDB();
+  }
+
+  getLibrosDB() {
+    this.dataService.getItems().subscribe((libros: Libro[]) => {
       this.libros = libros;
       this.filteredLibros = libros;
       this.totalItems = libros.length;
       this.updateDisplayedLibros();
     });
-    if (this.libros.length === 0) {
-      this.openMostrarDialog();
-    }
   }
-
   filter(query: string) {
     this.filteredLibros = this.libros.filter(libro =>
-      libro.titulo && libro.titulo.toLowerCase().includes(query.toLowerCase())
+      Object.values(libro).some(val => val && val.toString().toLowerCase().includes(this.searchTerm.toLowerCase()))
     );
     this.totalItems = this.filteredLibros.length;
     this.currentPage = 0;

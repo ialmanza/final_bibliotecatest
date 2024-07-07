@@ -4,6 +4,11 @@ import { ListarConTablaComponent } from './components/listar-con-tabla/listar-co
 import { BusquedaDeLibrosCampoComponent } from './components/busqueda-de-libros-campo/busqueda-de-libros-campo.component';
 import { EditarLibroComponent } from './components/editar-libro/editar-libro.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { PruebaBdComponent } from './components/prueba-bd/prueba-bd.component';
+
+
+
+
 export const routes: Routes = [
 
   { path: 'crear-libro', component: CrearLibroComponent },
@@ -11,6 +16,7 @@ export const routes: Routes = [
   { path: 'filtrar', component: BusquedaDeLibrosCampoComponent },
   { path: 'editar', component: EditarLibroComponent },
   { path: 'dashboard', component: DashboardComponent },
+  { path: 'prueba', component: PruebaBdComponent },
   { path: '', redirectTo: 'listar-tabla', pathMatch: 'full' },
 
 ];

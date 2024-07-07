@@ -1,7 +1,6 @@
 <br>
 <div class="container">
   <div class="row">
-      <br><br>
 
       <p class="clasep">Buscar por...</p>
  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="example-tree custom-tree">
@@ -33,37 +32,40 @@
 
     <div class="row">
       <div class="col">
-        <button class="btn btn-primary mb-3" (click)="exportToExcel()">Exportar a Excel</button>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">Título</th>
-              <th scope="col">ISBN</th>
-              <th scope="col">Primer autor</th>
-              <th scope="col">Segundo autor</th>
-              <th scope="col">Tercer autor</th>
-              <th scope="col">Fecha de publicacion</th>
-              <th scope="col">Editorial</th>
-              <th scope="col">Genero</th>
-              <th scope="col">Paginas</th>
-              <th scope="col">Campo adicional</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let libro of displayedLibros">
-              <td>{{libro.titulo}}</td>
-              <td>{{libro.isbn}}</td>
-              <td>{{libro.primerautor}}</td>
-              <td>{{libro.segundoautor}}</td>
-              <td>{{libro.tercerautor}}</td>
-              <td>{{libro.fechapublicacion}}</td>
-              <td>{{libro.editorial}}</td>
-              <td>{{libro.genero}}</td>
-              <td>{{libro.paginas}}</td>
-              <td>{{libro.descripcion}}</td>
-            </tr>
-          </tbody>
-        </table>
+        <!-- <button class="btn btn-primary mb-3" (click)="exportToExcel()">Exportar a Excel</button> -->
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Título</th>
+                <th scope="col">ISBN</th>
+                <th scope="col">Primer autor</th>
+                <th scope="col">Segundo autor</th>
+                <th scope="col">Tercer autor</th>
+                <th scope="col">Fecha de publicacion</th>
+                <th scope="col">Editorial</th>
+                <th scope="col">Genero</th>
+                <th scope="col">Paginas</th>
+                <th scope="col">Campo adicional</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let libro of displayedLibros">
+                <td>{{ libro[1] }}</td>
+                <td>{{ libro[6] }}</td>
+                <td>{{ libro[2] }}</td>
+                <td>{{ libro[3] }}</td>
+                <td>{{ libro[4] }}</td>
+                <td>{{ libro[7] }}</td>
+                <td>{{ libro[8] }}</td>
+                <td>{{ libro[9] }}</td>
+                <td>{{ libro[5] }}</td>
+                <td>{{ libro[10] }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 
