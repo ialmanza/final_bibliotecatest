@@ -54,10 +54,11 @@ export class CrearLibroComponent implements OnInit {
   ngOnInit() {}
 
   addLibro() {
-    if (!this.verificarISBDValidada()) {
-      alert('ISBN ya se enceuntra registrado');
-      return;
-    }
+    // if (!this.verificarISBDValidada()) {
+    //   alert('ISBN ya se encuentra registrado');
+    //   return;
+    // }
+
     if (!this.libro.editorial || !this.libro.genero) {
       this.errorMessage = "No se pueden dejar campos vacíos para 'Editorial' o 'Género'.";
       return;
@@ -105,9 +106,13 @@ export class CrearLibroComponent implements OnInit {
   }
 
 
-  verificarISBDValidada() {
-    const variable = this.librosService.verificarISBNDisponible(this.libro.isbn)
-    return variable
-  }
+  // verificarISBDValidada() {
+  //   const variable = this.librosService.verificarISBNDisponible(this.libro.isbn)
+  //   return variable
+  // }
 
+  // getISBSNValidada() {
+  //   const variable = this.librosService.verificarISBNDisponible(this.libro.isbn)
+  //   return variable
+  // }
 }

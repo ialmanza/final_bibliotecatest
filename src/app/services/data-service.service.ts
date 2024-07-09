@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -36,4 +36,14 @@ export class DataService {
     });
     return this.http.post<void>(`${'https://maxipanza.com/borrar_libro'}/${id}`, null, { headers: header });
   }
+
+  // verificarISBNDisponible(isbn: string): Observable<boolean> {
+  //   const encontrada = this.getItems().pipe(
+  //     map((storedLibros: { isbn: string; }[]) => storedLibros.some((libro: { isbn: string; }) => libro.isbn === isbn))
+  //   );
+
+  //   if(encontrada)
+  //   {
+  // }
+
 }
