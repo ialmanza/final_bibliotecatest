@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class DataService {
 
-  private apiUrl = 'http://23.22.176.154:5000/libros'; // Reemplaza esto con la URL de tu API
+  private apiUrl = 'https://maxipanza.com/libros'; // Reemplaza esto con la URL de tu API
 
   constructor(private http: HttpClient) { }
 
@@ -20,17 +20,20 @@ export class DataService {
   }
 
   createItem(item: any): Observable<any> {
-    return this.http.post('http://23.22.176.154:5000/ingresar_libro', item);
+    return this.http.post('https://maxipanza.com/ingresar_libro', item);
   }
 
   updateItem(id: number, item: any): Observable<any> {
     const header = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-    return this.http.post(`${'http://23.22.176.154:5000/modificar'}/${id}`, item, { headers: header });
+    return this.http.post(`${'https://maxipanza.com/modificar'}/${id}`, item, { headers: header });
   }
 
   deleteItem(id: number): Observable<void> {
-    return this.http.post<void>(`${'http://23.22.176.154:5000/borrar_libro'}/${id}`, null);
+    const header = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    return this.http.post<void>(`${'https://maxipanza.com/borrar_libro'}/${id}`, null, { headers: header });
   }
 }

@@ -92,15 +92,15 @@ export class EditarLibroComponent {
   }
 
 
-  openEditDialog(libro: any = {}) {
+  openEditDialog(libro: any) {
     const dialogRef = this.dialog.open(DialogContentEditExampleDialog, {
       data: libro
-  });
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        const librosJson = JSON.stringify(libro);
-        this.dataService.updateItem(parseInt(libro.id,10), librosJson).subscribe(() => {
+        const libroEditado = result;
+        this.dataService.updateItem(libroEditado.id, libroEditado).subscribe(() => {
           this.getLibrosDB();
         });
       }
@@ -115,7 +115,8 @@ export class EditarLibroComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.dataService.deleteItem(parseInt(libro.id,10)).subscribe(() => {
+        const libroEditado = result;
+        this.dataService.deleteItem(libroEditado.id).subscribe(() => {
           this.getLibrosDB();
         });
       }
