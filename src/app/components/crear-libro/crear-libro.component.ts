@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DataService } from '../../services/data-service.service';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-crear-libro',
@@ -51,13 +52,20 @@ export class CrearLibroComponent implements OnInit {
 
   constructor(private librosService: LibrosServicioService, private router: Router, private dataService: DataService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
-  addLibro() {
-    // if (!this.verificarISBDValidada()) {
-    //   alert('ISBN ya se encuentra registrado');
-    //   return;
-    // }
+  async addLibro() {
+    if (this.getISBSNValidaCantidadDeDigitos()) {
+      alert('Por favor verificar ISBN');
+      return;
+    }
+
+    else if (this.verificarISBDValida()) {
+      alert('Por favor verificar ISBN');
+      return;
+    }
+
 
     if (!this.libro.editorial || !this.libro.genero) {
       this.errorMessage = "No se pueden dejar campos vacíos para 'Editorial' o 'Género'.";
@@ -106,13 +114,14 @@ export class CrearLibroComponent implements OnInit {
   }
 
 
-  // verificarISBDValidada() {
-  //   const variable = this.librosService.verificarISBNDisponible(this.libro.isbn)
-  //   return variable
-  // }
+  verificarISBDValida() {
+    const variable = this.dataService.verificarISBNDisponible(this.libro.isbn)
+    return variable
+  }
 
-  // getISBSNValidada() {
-  //   const variable = this.librosService.verificarISBNDisponible(this.libro.isbn)
-  //   return variable
-  // }
+  getISBSNValidaCantidadDeDigitos() {
+    const variable = this.dataService.validarISBN(this.libro.isbn)
+    return variable
+  }
+
 }

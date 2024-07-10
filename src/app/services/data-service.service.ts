@@ -37,13 +37,16 @@ export class DataService {
     return this.http.post<void>(`${'https://maxipanza.com/borrar_libro'}/${id}`, null, { headers: header });
   }
 
-  // verificarISBNDisponible(isbn: string): Observable<boolean> {
-  //   const encontrada = this.getItems().pipe(
-  //     map((storedLibros: { isbn: string; }[]) => storedLibros.some((libro: { isbn: string; }) => libro.isbn === isbn))
-  //   );
+  verificarISBNDisponible(isbn: string): Observable<boolean> {
+    return this.getItems().pipe(
+      map((storedLibros: { isbn: string; }[]) => {
+        return !storedLibros.some((libro: { isbn: string; }) => libro.isbn === isbn);
+      })
+    );
+  }
 
-  //   if(encontrada)
-  //   {
-  // }
+  validarISBN(isbn: string): boolean {
+    return isbn.length === 13;
+  }
 
 }
