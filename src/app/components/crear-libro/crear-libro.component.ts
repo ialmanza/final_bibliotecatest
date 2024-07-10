@@ -53,16 +53,16 @@ export class CrearLibroComponent implements OnInit {
   ngOnInit() {
   }
 
-  async addLibro() {
-    if (this.getISBSNValidaCantidadDeDigitos()) {
-      alert('Por favor verificar ISBN');
-      return;
-    }
+  addLibro() {
+    // if (this.getISBSNValidaCantidadDeDigitos()) {
+    //   alert('Por favor verificar ISBN');
+    //   return;
+    // }
 
-    else if (this.verificarISBDValida()) {
-      alert('Por favor verificar ISBN');
-      return;
-    }
+    // else if (this.verificarISBDValida()) {
+    //   alert('Por favor verificar ISBN');
+    //   return;
+    // }
 
 
     if (!this.libro.editorial || !this.libro.genero) {
