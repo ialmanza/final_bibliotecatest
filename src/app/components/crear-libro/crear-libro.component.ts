@@ -5,8 +5,6 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DataService } from '../../services/data-service.service';
-import { of } from 'rxjs';
-
 @Component({
   selector: 'app-crear-libro',
   standalone: true,
@@ -39,9 +37,9 @@ export class CrearLibroComponent implements OnInit {
   libro: any = {
       titulo: "",
       autor1: "",
-      cant_pag: 500,
+      cant_pag: "",
       isbn: "",
-      anio: 1605,
+      anio: "",
       editorial: "",
       genero: "",
       campo_extra: "",
